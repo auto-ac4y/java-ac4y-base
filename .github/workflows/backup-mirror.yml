@@ -1,4 +1,4 @@
-name: Backup Mirror to ac4y
+name: Backup Mirror to ac4y-safe
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all history for proper mirroring
 
-      - name: Mirror to ac4y personal account
+      - name: Mirror to ac4y-safe organization
         env:
           BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
         run: |
@@ -28,14 +28,14 @@ jobs:
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
 
           # Add backup remote
-          git remote add backup https://x-access-token:${BACKUP_TOKEN}@github.com/ac4y/${REPO_NAME}.git || true
+          git remote add backup https://x-access-token:${BACKUP_TOKEN}@github.com/ac4y-safe/${REPO_NAME}.git || true
 
-          # Create backup repo if it doesn't exist (will fail silently if exists)
+          # Create backup repo if it doesn't exist
           curl -X POST \
             -H "Authorization: token ${BACKUP_TOKEN}" \
             -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/user/repos \
-            -d "{\"name\":\"${REPO_NAME}\",\"description\":\"Backup mirror from auto-ac4y/${REPO_NAME}\",\"private\":false}" \
+            https://api.github.com/orgs/ac4y-safe/repos \
+            -d "{\"name\":\"${REPO_NAME}\",\"description\":\"Backup mirror from ac4y-auto/${REPO_NAME}\",\"private\":false}" \
             2>/dev/null || echo "Backup repo might already exist"
 
           # Wait a moment for repo creation
@@ -45,4 +45,4 @@ jobs:
           git push backup --all --force || echo "Failed to push branches"
           git push backup --tags --force || echo "Failed to push tags"
 
-          echo "✅ Successfully mirrored to ac4y/${REPO_NAME}"
+          echo "✅ Successfully mirrored to ac4y-safe/${REPO_NAME}"
