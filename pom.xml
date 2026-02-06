@@ -6,7 +6,7 @@
 
     <groupId>ac4y</groupId>
     <artifactId>ac4y-base</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.20260206.1</version>
     <packaging>jar</packaging>
 
     <name>Ac4y Base</name>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>ac4y</groupId>
             <artifactId>ac4y-utility</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.20260206.1</version>
         </dependency>
 
         <dependency>
